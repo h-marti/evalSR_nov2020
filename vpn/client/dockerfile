@@ -1,0 +1,7 @@
+FROM debian
+
+RUN apt-get update && apt-get upgrade -y
+
+COPY ./heartbeat.sh /
+
+CMD ["bash", "heartbeat.sh"]
