@@ -1,6 +1,6 @@
 # Auto install & config GQ server
 apt-get update
-apt-get install nginx
+apt-get install nginx curl -y
 
 # Display info
 echo "======================================"
@@ -11,12 +11,7 @@ echo "=                                    ="
 echo "======================================"
 
 echo ""
-read -p "Continue [y/n]" confirm
-
-if [ $confirm -eq "n" ]
-then
-  exit 1
-fi
+read -n1 -r -p "Press any key to continue..."
 
 
 # Install and config wireguard
