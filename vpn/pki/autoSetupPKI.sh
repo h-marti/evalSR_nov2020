@@ -60,3 +60,28 @@ openssl ca \
     -in certs/kiloupresquetout.local.csr \
     -out certs/kiloupresquetout.local.crt \
     -extensions server_ext
+
+# Export cert
+cp ca/root-ca.crt ./root-ca.crt
+mkdir /etc/ssl 2> /dev/null
+cat certs/kiloupresquetout.local.crt ca/signing-ca.crt >> /etc/ssl/kiloupresquetout.local.pem
+cp certs/kiloupresquetout.local.key /etc/ssl/kiloupresquetout.local.key 
+
+# Setup nginx
+echo "
+server {
+  listen443;
+    ssl on;
+    ssl_certificate /etc/ssl/kiloupresquetout.local.pem;
+    ssl_certificate_key /etc/ssl/kiloupresquetout.local.key;
+    server_name kiloupresquetout.local;
+    access_log /var/log/nginx/nginx.vhost.access.log;
+    error_log /var/log/nginx/nginx.vhost.error.log;
+    location / {
+        root  /home/www;
+        index  index.html;
+    }
+}
+" >> /etc/nginx
+
+/etc/init.d/nginx restart
