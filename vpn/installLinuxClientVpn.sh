@@ -1,10 +1,27 @@
 # Auto install & config wireguard client on linux
 
 # Auto install
-echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list
+if grep -Fxq 'deb http://deb.debian.org/debian buster-backports main' /etc/apt/sources.list
+then
+    echo "[*] sources.list OK"
+else
+    echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list
+fi
+
 apt-get update
+apt-get upgrade -y
+
+
 apt-get -t buster-backports install wireguard -y
-apt-get -t buster-backports install wireguard-dkms wireguard-tools linux-headers-$(uname -r) resolvconf -y
+apt-get -t buster-backports install linux-headers-$(uname -r) -y
+
+# Display info
+echo ""
+echo ""
+echo "[*] Reboot and run again in case of fail..."
+echo ""
+
+read -n1 -r -p "Press any key to continue..."
 
 # User confirmation
 ls -l
