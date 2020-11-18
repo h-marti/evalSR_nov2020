@@ -48,7 +48,7 @@ openssl ca \
     -extensions signing_ca_ext
 
 # 3.3 Create TLS server request
-SAN=DNS:www.simple.org \
+SAN=DNS:www.kiloupresquetout.local \
 openssl req -new \
     -config etc/server.conf \
     -out certs/simple.org.csr \
