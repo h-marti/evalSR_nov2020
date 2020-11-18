@@ -82,6 +82,6 @@ server {
         index  index.html;
     }
 }
-" >> /etc/nginx
+" > /etc/nginx/sites-available
 
 /etc/init.d/nginx restart
