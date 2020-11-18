@@ -51,12 +51,12 @@ openssl ca \
 SAN=DNS:www.kiloupresquetout.local \
 openssl req -new \
     -config etc/server.conf \
-    -out certs/simple.org.csr \
-    -keyout certs/simple.org.key
+    -out certs/kiloupresquetout.local.csr \
+    -keyout certs/kiloupresquetout.local.key
 
 # 3.4 Create TLS server certificate
 openssl ca \
     -config etc/signing-ca.conf \
-    -in certs/simple.org.csr \
-    -out certs/simple.org.crt \
+    -in certs/kiloupresquetout.local.csr \
+    -out certs/kiloupresquetout.local.crt \
     -extensions server_ext
