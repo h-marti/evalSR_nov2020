@@ -64,24 +64,25 @@ openssl ca \
 # Export cert
 cp ca/root-ca.crt ./root-ca.crt
 mkdir /etc/ssl 2> /dev/null
-cat certs/kiloupresquetout.local.crt ca/signing-ca.crt >> /etc/ssl/kiloupresquetout.local.pem
+cp certs/kiloupresquetout.local.crt /etc/ssl/kiloupresquetout.local.crt
 cp certs/kiloupresquetout.local.key /etc/ssl/kiloupresquetout.local.key 
 
-# Setup nginx
-echo "
-server {
-  listen443;
-    ssl on;
-    ssl_certificate /etc/ssl/kiloupresquetout.local.pem;
-    ssl_certificate_key /etc/ssl/kiloupresquetout.local.key;
-    server_name kiloupresquetout.local;
-    access_log /var/log/nginx/nginx.vhost.access.log;
-    error_log /var/log/nginx/nginx.vhost.error.log;
-    location / {
-        root  /home/www;
-        index  index.html;
-    }
-}
-" > /etc/nginx/sites-available
+# Setup apache2
+echo '
+LoadModule ssl_module modules/mod_ssl.so
 
-/etc/init.d/nginx restart
+Listen 443
+<VirtualHost *:443>
+    ServerName www.example.com
+    SSLEngine on
+    SSLCertificateFile "/etc/ssl/kiloupresquetout.local.crt"
+    SSLCertificateKeyFile "/etc/ssl/kiloupresquetout.local.key"
+</VirtualHost>
+' > /etc/apache2/sites-available/kilou.conf
+
+
+a2enmod ssl
+a2ensite kilou
+service apache2 reload
+
+a2dissite default

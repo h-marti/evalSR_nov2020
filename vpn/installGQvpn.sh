@@ -1,6 +1,6 @@
 # Auto install & config GQ server
 apt-get update
-apt-get install nginx curl -y
+apt-get install apache2 curl -y
 
 # Display info
 echo "======================================"
