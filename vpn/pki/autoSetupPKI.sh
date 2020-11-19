@@ -2,7 +2,7 @@
 # enable HTTPS on nginx
 
 
-if test -f /etc/ssl/kilou.cert; then
+if test -f /etc/ssl/kiloupresquetout.local.crt; then
     echo ""
     echo "[*] Certs already created"
     echo ""
@@ -72,6 +72,7 @@ else
     mkdir /etc/ssl 2> /dev/null
     cp certs/kiloupresquetout.local.crt /etc/ssl/kiloupresquetout.local.crt
     cp certs/kiloupresquetout.local.key /etc/ssl/kiloupresquetout.local.key 
+    cat ca/signing-ca.crt ca/root-ca.crt > /etc/ssl/chain.crt
 fi
 
 echo ""
@@ -89,6 +90,7 @@ Listen 443
     SSLEngine on
     SSLCertificateFile "/etc/ssl/kiloupresquetout.local.crt"
     SSLCertificateKeyFile "/etc/ssl/kiloupresquetout.local.key"
+    SSLCertificateChainFile "/etc/ssl/chain.crt"
 </VirtualHost>
 ' > /etc/apache2/sites-available/kilou.conf
 
@@ -97,4 +99,4 @@ a2enmod ssl
 a2ensite kilou
 service apache2 reload
 
-a2dissite default
+a2dissite 000-default
